@@ -19,13 +19,10 @@ def calcPortAsyc(dictDataSpec):
     NTotalSecurity = PARAMS.dictNTotalSecurity[dictDataSpec['SecuCodeIndex']]
     # read trading data, enter & close price, direction
     listDF = []
-    for root, dirs, files in os.walk(dictDataSpec['dirDataSingleStock']):
+    for root, dirs, files in os.walk(dictDataSpec['dirPerSecuCode']):
         for name in files:
             strFileAddress = '%s/%s'%(root, name)
             df = pd.read_pickle(strFileAddress)
-            if '603993' in df['SecuCode'].values:
-                #raise Exception
-                pass
             listDF.append(df)
     dfMiddle = pd.concat(listDF, axis=0)
     dfMiddle = dfMiddle.reset_index().set_index(['TradingDay', 'SecuCode'])
@@ -37,7 +34,6 @@ def calcPortAsyc(dictDataSpec):
     listTradingDay = dfTradingDay.index.intersection(dfMiddle.index.get_level_values('TradingDay'))
     listTradingDay = list(set(listTradingDay))
     listTradingDay = np.sort(listTradingDay)
-
 
     # initialize
     NSecuInPort = 0
@@ -102,6 +98,8 @@ def calcPortAsyc(dictDataSpec):
         dictOne['TradingDay'] = dtTradingDay
         dictOne['NSecuInPort'] = NSecuInPort
         dictOne['ReturnDollar'] = ReturnDollarClose + ReturnDollarEnter + ReturnDollarSame
+        if dictDataSpec['SecuCodeIndex'] in ['50ETF', 'sr.czc', 'm.czc']:
+            dictOne['Margin'] = dfOneDay.loc[setSecuCodeInPort, 'Margin'].sum()
         listDailyReturn.append(dictOne)
         
         # debug
@@ -143,7 +141,8 @@ def calcPortAsyc(dictDataSpec):
 if __name__ == '__main__':
     SecuCodeIndex = sys.argv[1]
     dictDataSpec = {}
-    dictDataSpec['dirDataSingleStock'] = PARAMS.dirDataSingleStock 
+    dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOption
     dictDataSpec['SecuCodeIndex'] = SecuCodeIndex
     calcPortAsyc(dictDataSpec)
+
 

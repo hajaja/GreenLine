@@ -8,23 +8,8 @@ import PARAMS
 reload(PARAMS)
 
 #########################
-# DataBase selection 
-#########################
-if PARAMS.strDBUsed == 'MySQLDB':
-    import UtilsMySQL as UtilsDB
-    reload(UtilsDB)
-else:
-    import UtilsMongoDB as UtilsDB
-    reload(UtilsDB)
-
-#########################
 # function
 #########################
-#------- get Exe & OHLCV data
-def getTradingData(dictDataSpec):
-    dfTrading = UtilsDB.readTradingData(dictDataSpec)
-    return dfTrading
-
 def keepOperation(s):
     s = s.ffill().fillna(0)
     indexNonOperation = s.diff()==0
