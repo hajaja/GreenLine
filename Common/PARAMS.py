@@ -29,6 +29,14 @@ dirDataSource = strDirRoot + '/Data/'
 if os.path.exists(dirDataSource) is False:
     os.mkdir(dirDataSource)
 
+
+strDirDataStrategyTemplate = '%s/%%s/'%dirDataSource
+listStrategy = ['Cache', 'SingleStock', 'OptionStraddle', 'OptionStrangle', 'OptionCalendar', 'OptionButterfly']
+for strStrategy in listStrategy:
+    dirDataStrategy = '%s/%s/'%(dirDataSource, strStrategy)
+    if os.path.exists(dirDataStrategy) is False:
+        os.mkdir(dirDataStrategy)
+"""
 #---- stock
 dirDataSingleStock = '%s/%s/'%(dirDataSource, 'SingleStock')
 if os.path.exists(dirDataSingleStock) is False:
@@ -53,7 +61,7 @@ if os.path.exists(dirDataOptionCalendar) is False:
 dirDataCache = '%s/%s/'%(dirDataSource, 'Cache')
 if os.path.exists(dirDataCache) is False:
     os.mkdir(dirDataCache)
-
+"""
 
 
 

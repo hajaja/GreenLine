@@ -143,6 +143,7 @@ if __name__ == '__main__':
     Strategy = sys.argv[2]
     dictDataSpec = {}
 
+    """
     if Strategy == 'OptionCalendar':
         dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionCalendar
     elif Strategy == 'OptionStraddle':
@@ -151,7 +152,8 @@ if __name__ == '__main__':
         dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionStrangle
     elif Strategy == 'Stock':
         dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataSingleStock
-
+    """
+    dictDataSpec['dirPerSecuCode'] = PARAMS.strDirDataStrategyTemplate%Strategy
     dictDataSpec['SecuCodeIndex'] = SecuCodeIndex
     calcPortAsyc(dictDataSpec)
 
