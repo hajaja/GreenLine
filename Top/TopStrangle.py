@@ -36,6 +36,7 @@ strReturnAnnualized = 'ReturnExpected_20'
 
 boolUpdate = False
 strProduct = '50ETF'
+strStrategy = 'Strangle'
 
 if boolUpdate:
     strAddressIV = ODB.Utils.strAddressIVTemplateLatest%strProduct
@@ -43,7 +44,7 @@ else:
     strAddressIV = ODB.Utils.strAddressIVTemplateHist%strProduct
 
 # read data from ODB
-strFileAddressTemp = '%s/OptionStraddle_%s_%s.pickle'%(PARAMS.dirDataCache, strProduct, str(boolUpdate))
+strFileAddressTemp = '%s/Option%s_%s_%s.pickle'%(PARAMS.dirDataCache, strStrategy, strProduct, str(boolUpdate))
 if os.path.exists(strFileAddressTemp):
     dfStraddle = pd.read_pickle(strFileAddressTemp)
 else:
@@ -58,9 +59,17 @@ else:
     df = df.groupby(['SettleDate', 'trade_date']).apply(Utils.keepATM)
     
     # straddle
-    gg = df.set_index('trade_date').groupby(['SettleDate', 'Strike'])
-    dfStraddle = gg.apply(Utils.funcFindStraddle)
-    dfStraddle.to_pickle(strFileAddressTemp)
+    if strStrategy == 'Straddle':
+        gg = df.set_index('trade_date').groupby(['SettleDate', 'Strike'])
+        dfStraddle = gg.apply(Utils.funcFindStraddle)
+        dfStraddle.to_pickle(strFileAddressTemp)
+
+    elif strStrategy == 'Strangle':
+        df = df.groupby(['SettleDate', 'trade_date']).apply(Utils.findStranglePair)
+        df = df[df['LeftRight'].notnull()]
+        gg = df.groupby(['SettleDate', 'StrikeMiddle', 'trade_date'])
+        dfStraddle = gg.apply(Utils.funcFindStrangle)
+        dfStraddle.to_pickle(strFileAddressTemp)
 
 # when to sell straddle
 if direction == 'B':
@@ -185,11 +194,17 @@ for nOppo in range(0, dfOppo.index.size):
 dfPairAll = pd.concat(listDF, axis=0)
 dfPairAll.to_pickle('dfPair.pickle')
 
+
+if strStrategy == 'Strategy':
+    dirData = PARAMS.dirDataOptionStraddle
+elif strStrategy == 'Strangle':
+    dirData = PARAMS.dirDataOptionStrangle
+
 if PARAMS.boolClear:
-    shutil.rmtree(PARAMS.dirDataOption)
-    os.mkdir(PARAMS.dirDataOption)
+    shutil.rmtree(dirData)
+    os.mkdir(dirData)
 
 for nOppo in dfPairAll['nOppo'].unique():
-    strFileAddress = '%s/%s.pickle'%(PARAMS.dirDataOption, str(nOppo))
+    strFileAddress = '%s/%s.pickle'%(dirData, str(nOppo))
     dfPairAll[dfPairAll['nOppo']==nOppo].to_pickle(strFileAddress)
 

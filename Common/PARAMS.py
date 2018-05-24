@@ -34,10 +34,27 @@ dirDataSingleStock = '%s/%s/'%(dirDataSource, 'SingleStock')
 if os.path.exists(dirDataSingleStock) is False:
     os.mkdir(dirDataSingleStock)
 
-#---- option
-dirDataOption = '%s/%s/'%(dirDataSource, 'Option')
-if os.path.exists(dirDataOption) is False:
-    os.mkdir(dirDataOption)
+#---- option, straddle
+dirDataOptionStraddle = '%s/%s/'%(dirDataSource, 'OptionStraddle')
+if os.path.exists(dirDataOptionStraddle) is False:
+    os.mkdir(dirDataOptionStraddle)
+
+#---- option, strangle
+dirDataOptionStrangle = '%s/%s/'%(dirDataSource, 'OptionStrangle')
+if os.path.exists(dirDataOptionStrangle) is False:
+    os.mkdir(dirDataOptionStrangle)
+
+#---- option, calendar
+dirDataOptionCalendar = '%s/%s/'%(dirDataSource, 'OptionCalendar')
+if os.path.exists(dirDataOptionCalendar) is False:
+    os.mkdir(dirDataOptionCalendar)
+
+#---- cache
+dirDataCache = '%s/%s/'%(dirDataSource, 'Cache')
+if os.path.exists(dirDataCache) is False:
+    os.mkdir(dirDataCache)
+
+
 
 
 

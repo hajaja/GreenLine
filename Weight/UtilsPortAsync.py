@@ -140,8 +140,18 @@ def calcPortAsyc(dictDataSpec):
 
 if __name__ == '__main__':
     SecuCodeIndex = sys.argv[1]
+    Strategy = sys.argv[2]
     dictDataSpec = {}
-    dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOption
+
+    if Strategy == 'OptionCalendar':
+        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionCalendar
+    elif Strategy == 'OptionStraddle':
+        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionStraddle
+    elif Strategy == 'OptionStrangle':
+        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionStrangle
+    elif Strategy == 'Stock':
+        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataSingleStock
+
     dictDataSpec['SecuCodeIndex'] = SecuCodeIndex
     calcPortAsyc(dictDataSpec)
 
