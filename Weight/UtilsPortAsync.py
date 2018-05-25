@@ -121,7 +121,8 @@ def calcPortAsyc(dictDataSpec):
     dfDailyReturn = pd.DataFrame(listDailyReturn).set_index('TradingDay')
     sPCTPort = (dfDailyReturn['ReturnDollar'].cumsum() + PARAMS.TOTAL_MONENY).pct_change()
     dictMetric = RoyalMountain.PortPerf.Eval.Utils.funcMetric(sPCTPort)
-    print dictMetric
+    print '\nPort Performance %s-%s'%(sPCTPort.index.min(), sPCTPort.index.max())
+    print pd.Series(dictMetric)
 
     # per decision, append the decision for current position
     for SecuCode in setSecuCodeInPort:
@@ -136,23 +137,14 @@ def calcPortAsyc(dictDataSpec):
     PCTPerDecision = dfPerDecision.ix[range(1,NDecision,2), 'ExeOpen'].values / dfPerDecision.ix[range(0,NDecision,2), 'ExeOpen'].values - 1
     sPCTPerDecision = pd.Series(PCTPerDecision)
     
-    raise Exception
+    #raise Exception
 
 if __name__ == '__main__':
+    # sample : run Weight/UtilsPortAsync 50ETF OptionStraddle
     SecuCodeIndex = sys.argv[1]
     Strategy = sys.argv[2]
     dictDataSpec = {}
 
-    """
-    if Strategy == 'OptionCalendar':
-        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionCalendar
-    elif Strategy == 'OptionStraddle':
-        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionStraddle
-    elif Strategy == 'OptionStrangle':
-        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataOptionStrangle
-    elif Strategy == 'Stock':
-        dictDataSpec['dirPerSecuCode'] = PARAMS.dirDataSingleStock
-    """
     dictDataSpec['dirPerSecuCode'] = PARAMS.strDirDataStrategyTemplate%Strategy
     dictDataSpec['SecuCodeIndex'] = SecuCodeIndex
     calcPortAsyc(dictDataSpec)

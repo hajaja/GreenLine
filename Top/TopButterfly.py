@@ -17,7 +17,7 @@ import OptionDataBase as ODB
 reload(ODB)
 
 # param
-direction = 'S'
+direction = 'B'
 if direction == 'B':
     NDayEnterMin = 40
     NDayExitMax = 20
@@ -63,8 +63,8 @@ else:
     df = df[df['LeftRight'].notnull()]
     gg = df.reset_index().groupby(['SettleDate', 'StrikeMiddle', 'trade_date'])
     dfStraddle = gg.apply(Utils.funcFindButterfly, strStrategy)
-    dfStraddle.to_pickle(strFileAddressTemp)
     dfStraddle = dfStraddle.reset_index().drop('level_3', axis=1).set_index(['SettleDate', 'StrikeMiddle', 'trade_date']).sort_index()
+    dfStraddle.to_pickle(strFileAddressTemp)
 
 # when to sell straddle
 if direction == 'B':

@@ -29,14 +29,14 @@ elif direction == 'S':
     NDayExitMax = 5
     ReturnAnnualized = 0.4
     ReturnOnce = 0.15
-    ReturnOnceExit = 0.1
+    ReturnOnceExit = 0.05
 VolumeMin = 500
 strIVDiff = 'IVDiff_5'
 strReturnAnnualized = 'ReturnExpected_20'
 
 boolUpdate = False
 strProduct = '50ETF'
-strStrategy = 'Straddle'
+strStrategy = 'OptionStraddle'
 
 if boolUpdate:
     strAddressIV = ODB.Utils.strAddressIVTemplateLatest%strProduct

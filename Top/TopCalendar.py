@@ -19,15 +19,15 @@ reload(ODB)
 # param
 VolumeMin = 500
 strIVDiff = 'IVDiff'
-NDayEnterMin = 8
-NDayExitMax = 3
-ReturnOnce = 0.04
+NDayEnterMin = 10
+NDayExitMax = 5
+ReturnOnce = 0.1
 ReturnOnceExit = 0.01
 strReturnAnnualized = 'ReturnExpected'
 boolUpdate = False
 
-#strProduct = '50ETF'
-strProduct = 'm.dce'
+strProduct = '50ETF'
+#strProduct = 'm.dce'
 strStrategy = 'OptionCalendar'
 
 if boolUpdate:
@@ -36,7 +36,7 @@ else:
     strAddressIV = ODB.Utils.strAddressIVTemplateHist%strProduct
 
 # read data from ODB
-strFileAddressTemp = '%s/%s_%s_%s.pickle'%(PARAMS.dirDataCache, strStrategy, strProduct, str(boolUpdate))
+strFileAddressTemp = '%s/Cache/%s_%s_%s.pickle'%(PARAMS.dirDataSource, strStrategy, strProduct, str(boolUpdate))
 if os.path.exists(strFileAddressTemp):
     dfCalendar = pd.read_pickle(strFileAddressTemp)
 else:
