@@ -109,11 +109,11 @@ def funcFindStraddle(df, strStrategy):
     print df.name
 
     # find call and put
-    if strStrategy == 'Strangle':
+    if strStrategy == 'OptionStrangle':
         sC = df[(df['LeftRight']=='R')&(df['COP'])].iloc[0]
         sP = df[(df['LeftRight']=='L')&(df['COP']==False)].iloc[0]
         sM = df[(df['LeftRight']=='M')&(df['COP'])].iloc[0]
-    elif strStrategy == 'Straddle':
+    elif strStrategy == 'OptionStraddle':
         sC = df[(df['LeftRight']=='M')&(df['COP'])].iloc[0]
         sP = df[(df['LeftRight']=='M')&(df['COP']==False)].iloc[0]
         sM = sC

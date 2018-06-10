@@ -29,14 +29,14 @@ elif direction == 'S':
     NDayExitMax = 5
     ReturnAnnualized = 0.4
     ReturnOnce = 0.15
-    ReturnOnceExit = 0.05
+    ReturnOnceExit = 0.1    # classic parameter: ReturnOnce=0.15, ReturnOnceExit=0.1, ReturnAnnualized=0.4, NDayEnterMin=10, NDayExitMax=5
 VolumeMin = 500
 strIVDiff = 'IVDiff_5'
 strReturnAnnualized = 'ReturnExpected_20'
 
 boolUpdate = False
 strProduct = '50ETF'
-strStrategy = 'OptionStraddle'
+strStrategy = 'OptionStrangle'
 
 if boolUpdate:
     strAddressIV = ODB.Utils.strAddressIVTemplateLatest%strProduct
@@ -44,7 +44,7 @@ else:
     strAddressIV = ODB.Utils.strAddressIVTemplateHist%strProduct
 
 # read data from ODB
-strFileAddressTemp = '%s/%s_%s_%s.pickle'%(PARAMS.dirDataCache, strStrategy, strProduct, str(boolUpdate))
+strFileAddressTemp = '%s/Cache/%s_%s_%s.pickle'%(PARAMS.dirDataSource, strStrategy, strProduct, str(boolUpdate))
 if os.path.exists(strFileAddressTemp):
     dfStraddle = pd.read_pickle(strFileAddressTemp)
 else:
@@ -64,7 +64,6 @@ else:
     gg = df.reset_index().groupby(['SettleDate', 'StrikeMiddle', 'trade_date'])
     dfStraddle = gg.apply(Utils.funcFindStraddle, strStrategy)
     dfStraddle.to_pickle(strFileAddressTemp)
-
 
 # when to sell straddle
 if direction == 'B':
@@ -190,8 +189,9 @@ for nOppo in range(0, dfOppo.index.size):
     # dump result
     listDF.append(dfDiff)
 
+# dump result
 dfPairAll = pd.concat(listDF, axis=0)
-dfPairAll.to_pickle('dfPair.pickle')
+#dfPairAll.to_pickle('dfPair.pickle')
 
 dirData = PARAMS.strDirDataStrategyTemplate%strStrategy
 if PARAMS.boolClear:

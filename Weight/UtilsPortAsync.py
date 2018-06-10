@@ -137,7 +137,19 @@ def calcPortAsyc(dictDataSpec):
     PCTPerDecision = dfPerDecision.ix[range(1,NDecision,2), 'ExeOpen'].values / dfPerDecision.ix[range(0,NDecision,2), 'ExeOpen'].values - 1
     sPCTPerDecision = pd.Series(PCTPerDecision)
     
-    #raise Exception
+    # save result
+    import OptionDataBase as ODB
+    reload(ODB)
+    import ThaiExpress as TE
+    reload(TE)
+    dfReturn = sPCTPort.reset_index()
+    dfReturn.columns = ['trade_date', 'PCT']
+    dfReturn['code'] = '%s_%s'%(dictDataSpec['Strategy'], dictDataSpec['SecuCodeIndex'])
+    TE.Common.Utils.UtilsDB.saveTB_DAILY(
+            ODB.Utils.UtilsDB.strDB, 
+            ODB.Utils.UtilsDB.TB_DAILY_PERFORMANCE, 
+            dfReturn,
+            )
 
 if __name__ == '__main__':
     # sample : run Weight/UtilsPortAsync 50ETF OptionStraddle
@@ -147,6 +159,7 @@ if __name__ == '__main__':
 
     dictDataSpec['dirPerSecuCode'] = PARAMS.strDirDataStrategyTemplate%Strategy
     dictDataSpec['SecuCodeIndex'] = SecuCodeIndex
+    dictDataSpec['Strategy'] = Strategy
     calcPortAsyc(dictDataSpec)
 
 
