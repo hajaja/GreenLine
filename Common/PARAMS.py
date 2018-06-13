@@ -11,7 +11,7 @@ reload(Dialect)
 # parameters
 #########################
 strDBUsed = 'MySQLDB'
-strDataSource = Dialect.dictCDB['strDataSource']
+strDataSource = Dialect.dictConfig['strDataSource']
 boolUpdate = True
 boolClear = True
 dtNow = datetime.datetime.now()
